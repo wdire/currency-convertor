@@ -1,0 +1,106 @@
+@font-face {
+    font-family: "Inter";
+    //src: url("../public/fonts/Inter-Regular.eot"); /* IE9 Compat Modes */
+    src: //url("../public/fonts/Inter-Regular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+      //url("../public/fonts/Inter-Regular.otf") format("opentype"), /* Open Type Font */
+      //url("../public/fonts/Inter-Regular.svg") format("svg"), /* Legacy iOS */
+      url("media/fonts/Inter-Regular.woff2") format("woff2"), /* Modern Browsers */
+      url("media/fonts/Inter-Regular.woff") format("woff"), /* Modern Browsers */
+      url("media/fonts/Inter-Regular.ttf") format("ttf"), /* Safari, Android, iOS */
+      url("media/fonts/Inter-Regular.eot") format('eot');
+    font-weight: normal;
+    font-style: normal;
+}
+
+$headerFontSize:24px;
+$mainWidth:280px;
+$currInputHeight:46px;
+$currInputRadius:8px;
+$currInputTextFontSize:20px;
+$currInputTypeFontSize:15px;
+$currColor:#222;
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin:0;
+    padding:0;
+    overflow-x: hidden;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+.container{
+    margin-top:30px;
+}
+
+.header{
+    margin-bottom: 30px;
+}
+
+.header-text{
+    font-size:$headerFontSize;
+    text-align: center;
+}
+
+.main{
+    //border:1px solid black;
+    margin:0 auto;
+    width:$mainWidth;
+}
+
+.curr-input{
+    display: flex;
+    border-radius: $currInputRadius;
+    height:$currInputHeight;
+    font-family: inherit;
+    position: relative;
+
+    &:after{
+        content:"";
+        pointer-events: none;
+        position: absolute;
+        top:50%;
+        right:9px;
+        transform: translateY(-50%);
+        height: 0;
+        border-style: solid;
+        border-width: 6px 6px 0 6px;
+        border-color: $currColor transparent transparent transparent;
+    }
+
+    *{
+        border:1px solid #b9b9b9;
+
+        &:focus{
+            outline:none;
+        }
+    }
+}
+
+.curr-input-text{
+    width:20px;
+    flex-grow: 1;
+    font-size:$currInputTextFontSize;
+    font-family: inherit;
+    padding:5px;
+    padding: 0;
+    padding-left: 10px;
+    border-right:0;
+    border-top-left-radius: $currInputRadius;
+    border-bottom-left-radius: $currInputRadius;
+    color:$currColor;
+}
+
+.curr-input-type{
+    padding-right:25px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    font-size:$currInputTypeFontSize;
+    font-family: inherit;
+    border-left:0;
+    border-top-right-radius: $currInputRadius;
+    border-bottom-right-radius: $currInputRadius;
+    color:$currColor;
+}
