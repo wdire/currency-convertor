@@ -112,3 +112,29 @@ input[type=number]::-webkit-outer-spin-button {
     border-bottom-right-radius: $currInputRadius;
     color:$currColor;
 }
+
+.curr-result{
+    margin-top:26px;
+}
+
+.curr-swap{
+    width:80px;
+    height:40px;
+    border:1px solid black;
+    margin:20px auto;
+    cursor: pointer;
+}
+
+.curr-result_head{
+    font-size:14px;
+    color:#727272;
+    margin-bottom: 5px;
+}
+
+.curr-result_body{
+    font-size:32px;
+}
+
+.curr-result_value{
+    word-break: break-all;
+}

@@ -1,6 +1,10 @@
 (function(){
 
-    let currentCurrencies = {};
+    // Store all currencies thus don't need to fetch currency all the time.
+    let currentCurrencies = {
+        //"USD-TRY":7.36
+    };
+
     const DOM = {
         currInputFirst:{
             text:document.getElementById("curr-input-first-text"),
@@ -20,32 +24,71 @@
 
     async function init(){
 
-        document.addEventListener("keydown", 
-        //debounce(
+        document.getElementById("curr-swap").addEventListener("click", function(e){
+            swapCurrencies();
+        });
+
+        document.addEventListener("keyup", 
             function(e){
                 let elm = e.target;
 
+                // If pressed any key on text inputs, convert currency.
                 if(elm && elm.classList && elm.classList.contains("curr-input-text")){
-                    console.log("HERE, Converting..");
                     manageConvertCurrency();
                 }
             }
-        //,200)
         );
+        manageConvertCurrency();
+    }
+
+    function swapCurrencies(){
+        let tmp = DOM.currInputFirst.type.value
+        DOM.currInputFirst.type.value = DOM.currInputSecond.type.value;
+        DOM.currInputSecond.type.value = tmp;
+        manageConvertCurrency();
     }
 
     async function manageConvertCurrency(){
 
-        let value = DOM.currInputFirst.text.innerText;
-        let firstType = DOM.currInputFirst.type;
-        let secondType = DOM.currInputSecond.type;
+        let value = DOM.currInputFirst.text.value;
+        let firstType = DOM.currInputFirst.type.value;
+        let secondType = DOM.currInputSecond.type.value;
 
         let resultElm = DOM.currInputSecond.text;
 
-        console.log("KKK",await fetchCurrencyJSON("USD","TRY"));
+        // Check does currency data exists.
+        if(currentCurrencies[firstType+"-"+secondType]){
+
+            console.log("Var 1", currentCurrencies[firstType+"-"+secondType]);
+            let currEx = currentCurrencies[firstType+"-"+secondType];
+
+            let calcedCurr = (currEx * value).toFixed(2);
+            resultElm.value = calcedCurr;
+
+        }else if(currentCurrencies[secondType+"-"+firstType]){
+
+            console.log("Var 2", currentCurrencies[secondType+"-"+firstType]);
+            let currEx = currentCurrencies[secondType+"-"+firstType];
+
+            let calcedCurr = ( (1 / currEx) * value).toFixed(2);
+            resultElm.value = calcedCurr;
+
+        }else{
+            console.log("Yok 3");
+
+            let currData = await fetchCurrencyJSON(firstType, secondType);
+            
+            let currEx = currData.rates[secondType];
+
+            currentCurrencies[firstType+"-"+secondType] = currEx;
+
+            let calcedCurr = (currEx * value).toFixed(2);
+            resultElm.value = calcedCurr;
+        }
 
     }
 
+    // Return's currency data as JSON.
     async function fetchCurrencyJSON(from, to){
         return await fetch(`https://api.exchangerate.host/latest?base=${from}&symbols=${to}`)
         .then((resp) => resp.json())
@@ -54,6 +97,7 @@
         });
     }
 
+    // Originally taken from Trey Huffine - https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086
     function debounce (func, wait){
         let timeout;
       
