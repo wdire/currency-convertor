@@ -13,11 +13,11 @@
 }
 
 $headerFontSize:24px;
-$mainWidth:280px;
+$mainWidth:300px;
 $currInputHeight:46px;
 $currInputRadius:8px;
-$currInputTextFontSize:20px;
-$currInputTypeFontSize:15px;
+$currInputTextFontSize:18px;
+$currInputTypeFontSize:13px;
 $currColor:#222;
 
 *{
@@ -29,6 +29,12 @@ body{
     padding:0;
     overflow-x: hidden;
     font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 .container{
@@ -99,6 +105,8 @@ body{
     -webkit-appearance: none;
     font-size:$currInputTypeFontSize;
     font-family: inherit;
+    width:140px;
+    padding-left:5px;
     border-left:0;
     border-top-right-radius: $currInputRadius;
     border-bottom-right-radius: $currInputRadius;
