@@ -14,6 +14,14 @@
             text:document.getElementById("curr-input-second-text"),
             type:document.getElementById("curr-input-second-type")
         },
+        currResultFirst:{
+            value:document.getElementById("curr-result_first-curr-value"),
+            typeName:document.getElementById("curr-result_first-curr-name"),
+        },
+        currResultSecond:{
+            value:document.getElementById("curr-result_second-curr-value"),
+            typeName:document.getElementById("curr-result_second-curr-name"),
+        }
     };
 
     /**for(const [key, value] of Object.entries(all)){
@@ -54,24 +62,46 @@
         let firstType = DOM.currInputFirst.type.value;
         let secondType = DOM.currInputSecond.type.value;
 
-        let resultElm = DOM.currInputSecond.text;
+        let firstTypeName = DOM.currInputFirst.type.options[DOM.currInputFirst.type.selectedIndex].innerText.split("-")[1].trim();
+        let secondTypeName = DOM.currInputSecond.type.options[DOM.currInputSecond.type.selectedIndex].innerText.split("-")[1].trim();
 
         // Check does currency data exists.
         if(currentCurrencies[firstType+"-"+secondType]){
 
-            console.log("Var 1", currentCurrencies[firstType+"-"+secondType]);
+            console.log("Var 1");
             let currEx = currentCurrencies[firstType+"-"+secondType];
 
-            let calcedCurr = (currEx * value).toFixed(2);
-            resultElm.value = calcedCurr;
+            let calcedCurr = Number(currEx * value);
 
+            writeCurrResult({
+                firstCurr:{
+                    value:value,
+                    name:firstTypeName,
+                },
+                secondCurr:{
+                    value:calcedCurr,
+                    name:secondTypeName,
+                },
+            });
+        
+        // If inverse currency exist
         }else if(currentCurrencies[secondType+"-"+firstType]){
 
-            console.log("Var 2", currentCurrencies[secondType+"-"+firstType]);
+            console.log("Var 2");
             let currEx = currentCurrencies[secondType+"-"+firstType];
 
-            let calcedCurr = ( (1 / currEx) * value).toFixed(2);
-            resultElm.value = calcedCurr;
+            let calcedCurr = Number((1 / currEx) * value);
+
+            writeCurrResult({
+                firstCurr:{
+                    value:value,
+                    name:firstTypeName,
+                },
+                secondCurr:{
+                    value:calcedCurr,
+                    name:secondTypeName,
+                },
+            });
 
         }else{
             console.log("Yok 3");
@@ -80,11 +110,48 @@
             
             let currEx = currData.rates[secondType];
 
+            // Save currency data
             currentCurrencies[firstType+"-"+secondType] = currEx;
 
-            let calcedCurr = (currEx * value).toFixed(2);
-            resultElm.value = calcedCurr;
+            let calcedCurr = Number(currEx * value);
+
+            writeCurrResult({
+                firstCurr:{
+                    value:value,
+                    name:firstTypeName,
+                },
+                secondCurr:{
+                    value:calcedCurr,
+                    name:secondTypeName,
+                },
+            });
+            
         }
+
+    }
+
+    /**
+     * 
+     * @param {object} data;
+     * @param {object} data.firstCurr;
+     * @param {number} data.firstCurr.value Ex: 123.30;
+     * @param {string} data.firstCurr.name Ex: United States Dollar;
+     * @param {object} data.secondCurr;
+     * @param {number} data.secondCurr.value;
+     * @param {string} data.secondCurr.name;
+     */
+    function writeCurrResult(data){
+        // Write to second input box
+        console.log(data);
+        DOM.currInputSecond.text.value = data.secondCurr.value.toFixed(2);
+
+        console.log(DOM);
+
+        DOM.currResultFirst.value.innerText = data.firstCurr.value.toLocaleString("en-US");
+        DOM.currResultFirst.typeName.innerText = data.firstCurr.name;
+
+        DOM.currResultSecond.value.innerText = data.secondCurr.value.toLocaleString("en-US");
+        DOM.currResultSecond.typeName.innerText = data.secondCurr.name;
 
     }
 
