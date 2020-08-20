@@ -46,6 +46,15 @@
                 }
             }
         );
+
+        DOM.currInputFirst.type.addEventListener("change", function(){
+            manageConvertCurrency();
+        });
+
+        DOM.currInputSecond.type.addEventListener("change", function(){
+            manageConvertCurrency();
+        });
+
         manageConvertCurrency();
     }
 
@@ -131,7 +140,6 @@
     }
 
     /**
-     * 
      * @param {object} data;
      * @param {object} data.firstCurr;
      * @param {number} data.firstCurr.value Ex: 123.30;
